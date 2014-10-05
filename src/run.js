@@ -22,6 +22,8 @@ function deviceMotionHandler(eventData) {
 
 var accel;
 var smoothed_a;
+var touching = false;
+var loading = false;
 
 if (window.DeviceMotionEvent) {
   window.ondevicemotion = function(eventData) {
@@ -32,11 +34,12 @@ if (window.DeviceMotionEvent) {
 
 flow.onCalculated(
 	function (direction) {
+    if (touching || loading) { return; }
 		if(isNaN(direction.u) || isNaN(direction.v))
 			document.getElementById("x").innerHTML = "direction was not a number";
 		else{
       netFlow = {x: 0, y: 0};
-      var lowPassThreshold = 1;
+      var lowPassThreshold = 2;
       var numZones = 0;
 
       orientationBins = 9;
@@ -137,12 +140,29 @@ flow.onCalculated(
 
 function initialize() {
   var mapOptions = {
-    center: { lat: -34.397, lng: 150.644},
-    zoom: 8
+    center: { lat: 42.3646, lng: -71.1028},
+    zoom: 13
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
+  google.maps.event.addListener(map, 'bounds_changed', function(e) {
+    if (touching) {
+      loading = true;
+    }
+    google.maps.event.addListener(map, 'tilesloaded', function(e) {
+      loading = false;
+    });
+  });
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 flow.startCapture();
+
+window.addEventListener('load', function() {
+  document.body.addEventListener('touchstart', function(e) {
+    touching = true;
+  }, false);
+  document.body.addEventListener('touchend', function(e) {
+    touching = false;
+  }, false);
+}, false);
