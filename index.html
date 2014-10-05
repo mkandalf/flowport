@@ -6,11 +6,18 @@
         #image{ background-image: url("https://i.imgur.com/TGma704.jpg"); height: 100%; width: 100%; overflow: hidden; background-repeat: no-repeat;}
     </style>
     <script type="text/javascript" src="oflow.js"></script>
+    <style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfRnx9l-lbFxYixN9szApP_UBvTTQHpvA">
+    </script>
     <script type="text/javascript" src="src/run.js"></script>
 </head>
 <body>
     <h1 id="accel_coords">X</h1>
     <h1 id="flow_coords"></h1>
+    <div id="map-canvas"></div>
     <div id='image'>
     </div>
     <div>

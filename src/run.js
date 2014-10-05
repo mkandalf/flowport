@@ -1,5 +1,7 @@
+var api_key = "AIzaSyDfRnx9l-lbFxYixN9szApP_UBvTTQHpvA";
 var flow = new oflow.WebCamFlow(window.document.createElement('video'), 16);
 
+var map;
 var position = {x: 0, y: 0};
 
 var lastT = (new Date()).getTime();
@@ -127,9 +129,20 @@ flow.onCalculated(
       position.y += smoothed_v.y*(deltaT/1000);
       //document.getElementById("x").innerHTML = position.x;
       //document.getElementById("y").innerHTML = position.y;
-      document.getElementById("image").style.backgroundPosition = position.x+" "+position.y;
+      //document.getElementById("image").style.backgroundPosition = position.x+" "+position.y;
+      map.panBy(-smoothed_v.x*(deltaT/1000), -smoothed_v.y*(deltaT/1000));
 		}
 	}
 );
+
+function initialize() {
+  var mapOptions = {
+    center: { lat: -34.397, lng: 150.644},
+    zoom: 8
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
 
 flow.startCapture();
