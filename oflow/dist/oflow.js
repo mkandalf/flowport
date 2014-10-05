@@ -279,13 +279,13 @@ function VideoFlow(defaultVideoTag, zoneSize) {
         isCapturing = false,
 
         getCurrentPixels = function () {
-            width = video.videoWidth;
-            height = video.videoHeight;
+            width = video.videoWidth/2;
+            height = video.videoHeight/2;
             canvas.width  = width;
             canvas.height = height;
 
             if (width && height) {
-                ctx.drawImage(video, 0, 0);
+                ctx.drawImage(video, 0, 0, width, height);
                 var imgd = ctx.getImageData(0, 0, width, height);
                 return imgd.data;
             }
@@ -302,8 +302,8 @@ function VideoFlow(defaultVideoTag, zoneSize) {
         },
 
         initView = function () {
-            width = video.videoWidth;
-            height = video.videoHeight;
+            width = video.videoWidth/4;
+            height = video.videoHeight/4;
 
             if (!canvas) { canvas = window.document.createElement('canvas'); }
             ctx = canvas.getContext('2d');
